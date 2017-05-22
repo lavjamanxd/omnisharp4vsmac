@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniSharp.Addin", "OmniSharp.Addin\OmniSharp.Addin.csproj", "{FE0C7271-D326-446D-A841-CABDC019F104}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniSharp.Server", "OmniSharp.Server\OmniSharp.Server.csproj", "{BAC874CD-AC11-4AC8-B96E-F434AF5D8F51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniSharp.Server", "OmniSharp.Server\OmniSharp.Server.csproj", "{EEBBF0DB-7706-4C97-911C-63F1893B3CAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +15,9 @@ Global
 		{FE0C7271-D326-446D-A841-CABDC019F104}.Debug|x86.Build.0 = Debug|x86
 		{FE0C7271-D326-446D-A841-CABDC019F104}.Release|x86.ActiveCfg = Release|x86
 		{FE0C7271-D326-446D-A841-CABDC019F104}.Release|x86.Build.0 = Release|x86
-		{BAC874CD-AC11-4AC8-B96E-F434AF5D8F51}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BAC874CD-AC11-4AC8-B96E-F434AF5D8F51}.Debug|x86.Build.0 = Debug|Any CPU
-		{BAC874CD-AC11-4AC8-B96E-F434AF5D8F51}.Release|x86.ActiveCfg = Release|Any CPU
-		{BAC874CD-AC11-4AC8-B96E-F434AF5D8F51}.Release|x86.Build.0 = Release|Any CPU
+		{EEBBF0DB-7706-4C97-911C-63F1893B3CAF}.Debug|x86.ActiveCfg = Debug|x86
+		{EEBBF0DB-7706-4C97-911C-63F1893B3CAF}.Debug|x86.Build.0 = Debug|x86
+		{EEBBF0DB-7706-4C97-911C-63F1893B3CAF}.Release|x86.ActiveCfg = Release|x86
+		{EEBBF0DB-7706-4C97-911C-63F1893B3CAF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal
