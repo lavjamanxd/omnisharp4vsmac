@@ -5,10 +5,10 @@ namespace OmniSharp.Server
 {
     public sealed class Server
     {
-        private static volatile Server instance;
-        private static object _lock = new object();
+        private static volatile Server _instance;
+        private static readonly object Lock = new object();
 
-        private Process _process;
+        private readonly Process _process;
         private ICommunicationHandler _communicationHandler;
 
         private Server()
@@ -22,16 +22,14 @@ namespace OmniSharp.Server
         {
             get
             {
-                if (instance == null)
+                if (_instance != null) return _instance;
+                lock (Lock)
                 {
-                    lock (_lock)
-                    {
-                        if (instance == null)
-                            instance = new Server();
-                    }
+                    if (_instance == null)
+                        _instance = new Server();
                 }
 
-                return instance;
+                return _instance;
             }
         }
 
@@ -44,8 +42,8 @@ namespace OmniSharp.Server
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardInput = true;
             startInfo.UseShellExecute = false;
-            startInfo.Arguments = "--stdio";
-            startInfo.FileName = "omnisharp";
+            startInfo.Arguments = "--stdio --source d:\\home\\repo\\omnisharp4vsmac\\OmniSharp.Server\\";
+            startInfo.FileName = "d:\\home\\repo\\omnisharp-roslyn\\src\\OmniSharp\\bin\\Debug\\net46\\OmniSharp.exe";
             process.EnableRaisingEvents = true;
             process.OutputDataReceived += Process_OutputDataReceived;
             process.StartInfo = startInfo;

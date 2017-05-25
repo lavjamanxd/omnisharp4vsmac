@@ -1,5 +1,6 @@
 ﻿using System;
 using OmniSharp.Server.Communication;
+using OmniSharp.Server.Communication.Messages;
 
 namespace OmniSharp.Server
 {
@@ -10,7 +11,8 @@ namespace OmniSharp.Server
             var server = Server.Instance;
             server.SetCommunicationHandler(new CommunicationHandler());
 
-            server.ExecuteRequest("{}");
+            var json = new RenameRequest().ToString();
+            server.ExecuteRequest(json);
 
             Console.ReadKey();
         }
