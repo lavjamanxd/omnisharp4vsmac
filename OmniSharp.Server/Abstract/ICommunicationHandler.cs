@@ -1,7 +1,9 @@
-﻿namespace OmniSharp.Server.Abstract
+﻿using OmniSharp.Server.Communication.Messages;
+
+namespace OmniSharp.Server.Abstract
 {
     public interface ICommunicationHandler
     {
-        void ProcessMessage(string message);
+        ResponseBase ProcessMessage(string message);
     }
 }

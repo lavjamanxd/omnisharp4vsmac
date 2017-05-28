@@ -2,4 +2,10 @@
 <ExtensionModel>
 	<Runtime>
 	</Runtime>
+	<Extension path="/MonoDevelop/SourceEditor2/ContextMenu/Editor">
+		<CommandItem id="OmniSharp.Addin.Command.RenameCommand" />
+	</Extension>
+	<Extension path="/MonoDevelop/Ide/Commands/TextEditor">
+		<Command id="OmniSharp.Addin.Command.RenameCommand" _label="RenameOMNISHARP" defaultHandler="Command.RenameCommand" />
+	</Extension>
 </ExtensionModel>

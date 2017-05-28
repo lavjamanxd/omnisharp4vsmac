@@ -7,21 +7,22 @@ namespace OmniSharp.Server.Communication
 {
     public class CommunicationHandler : ICommunicationHandler
     {
-        public void ProcessMessage(string message)
+        public ResponseBase ProcessMessage(string message)
         {
             try
             {
+
+#if DEBUG
+                Console.WriteLine("STDOUT: " + message);
+#endif
+
                 var deserializedResponse = JsonConvert.DeserializeObject<ResponseBase>(message);
-                if (deserializedResponse.Command.Equals("rename"))
-                {
-                    var renameResponse = JsonConvert.DeserializeObject<RenameResponse>(deserializedResponse.Body.ToString());
-                }
+                return deserializedResponse;
             }
             catch
             {
-
             }
-            Console.WriteLine(message);
+            return null;
         }
     }
 }

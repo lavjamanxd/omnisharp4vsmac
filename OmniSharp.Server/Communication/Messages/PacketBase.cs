@@ -1,6 +1,6 @@
 namespace OmniSharp.Server.Communication.Messages
 {
-    public class PacketBase : IPacket
+    public abstract class PacketBase : IPacket
     {
         public int Seq { get; set; }
 

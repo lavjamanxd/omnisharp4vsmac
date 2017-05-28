@@ -1,5 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using OmniSharp.Server.Abstract;
+using OmniSharp.Server.Communication;
+using OmniSharp.Server.Communication.Messages;
+using OmniSharp.Server.Communication.Queue;
 
 namespace OmniSharp.Server
 {
@@ -9,11 +13,14 @@ namespace OmniSharp.Server
         private static readonly object Lock = new object();
 
         private readonly Process _process;
-        private ICommunicationHandler _communicationHandler;
+        private readonly RequestQueue _requestQueue = new RequestQueue();
+
+        private readonly ICommunicationHandler _communicationHandler;
 
         private Server()
         {
             _process = CreateProcess();
+            _communicationHandler = new CommunicationHandler();
             _process.Start();
             _process.BeginOutputReadLine();
         }
@@ -33,6 +40,11 @@ namespace OmniSharp.Server
             }
         }
 
+        public void TerminateProcess()
+        {
+            _process.Kill();
+        }
+
         private Process CreateProcess()
         {
             var startInfo = new ProcessStartInfo();
@@ -42,7 +54,7 @@ namespace OmniSharp.Server
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardInput = true;
             startInfo.UseShellExecute = false;
-            startInfo.Arguments = "--stdio --source d:\\home\\repo\\omnisharp4vsmac\\OmniSharp.Server\\";
+            startInfo.Arguments = "--stdio --source d:\\home\\repo\\omnisharp4vsmac\\Test\\";
             startInfo.FileName = "d:\\home\\repo\\omnisharp-roslyn\\src\\OmniSharp\\bin\\Debug\\net46\\OmniSharp.exe";
             process.EnableRaisingEvents = true;
             process.OutputDataReceived += Process_OutputDataReceived;
@@ -50,23 +62,27 @@ namespace OmniSharp.Server
             return process;
         }
 
-        public void SetCommunicationHandler(ICommunicationHandler handler)
+        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            _communicationHandler = handler;
-        }
-
-        void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            _communicationHandler?.ProcessMessage(e.Data);
-        }
-
-        public void ExecuteRequest(string request)
-        {
-            using (var writer = _process.StandardInput)
+            var result = _communicationHandler?.ProcessMessage(e.Data);
+            if (result != null)
             {
-                writer.WriteLine(request);
-                writer.Flush();
+                _requestQueue.ProcessEntry(result.Request_seq, result.Body);
             }
+        }
+
+        public void ExecuteRequest(RequestBase request, Action<object> callback)
+        {
+            _requestQueue.RegisterEntryToQueue(new RequestEntry(request) { HandlerCallback = callback });
+
+            var requestString = request.ToString();
+#if DEBUG
+            Console.WriteLine("REQUEST: " + requestString);
+#endif
+
+            var writer = _process.StandardInput;
+            writer.WriteLine(requestString);
+            writer.Flush();
         }
     }
 }

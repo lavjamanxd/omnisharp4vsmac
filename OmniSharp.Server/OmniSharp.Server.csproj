@@ -4,10 +4,10 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{EEBBF0DB-7706-4C97-911C-63F1893B3CAF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
     <RootNamespace>OmniSharp.Server</RootNamespace>
     <AssemblyName>OmniSharp.Server</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -17,7 +17,6 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ExternalConsole>true</ExternalConsole>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -25,7 +24,6 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ExternalConsole>true</ExternalConsole>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
@@ -35,6 +33,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builder\RenameBuilder.cs" />
+    <Compile Include="Builder\RequestBuilder.cs" />
+    <Compile Include="Builder\RequestBuilderBase.cs" />
     <Compile Include="Communication\Messages\BaseArguments.cs" />
     <Compile Include="Communication\Messages\IPacket.cs" />
     <Compile Include="Communication\Messages\IRequest.cs" />
@@ -46,8 +47,9 @@
     <Compile Include="Communication\Messages\RenameResponse.cs" />
     <Compile Include="Communication\Messages\RequestBase.cs" />
     <Compile Include="Communication\Messages\ResponseBase.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Communication\Queue\RequestEntry.cs" />
+    <Compile Include="Communication\Queue\RequestQueue.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Abstract\ICommunicationHandler.cs" />
     <Compile Include="Communication\CommunicationHandler.cs" />
