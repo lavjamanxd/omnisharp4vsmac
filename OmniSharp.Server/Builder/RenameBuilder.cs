@@ -2,13 +2,8 @@
 
 namespace OmniSharp.Server.Builder
 {
-    public class RenameBuilder : RequestBuilderBase<RenameRequest>
+    public class RenameBuilder : RequestBuilderBase<RenameRequest, RenameArguments>
     {
-        public RenameBuilder()
-        {
-            Request.Arguments = new RenameArguments();
-        }
-
         public RenameBuilder To(string to)
         {
             Request.Arguments.RenameTo = to;

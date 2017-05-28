@@ -12,17 +12,28 @@ namespace OmniSharp.Server
         private static volatile Server _instance;
         private static readonly object Lock = new object();
 
-        private readonly Process _process;
+        private Process _process;
         private readonly RequestQueue _requestQueue = new RequestQueue();
 
-        private readonly ICommunicationHandler _communicationHandler;
+        private ICommunicationHandler _communicationHandler;
+        private bool _initialized;
 
-        private Server()
+        public void InitializeServer(string omnisharpTarget, string projectPath)
         {
-            _process = CreateProcess();
+            if (_initialized)
+            {
+                throw new InvalidOperationException("OmniSharp process already running");
+            }
+
             _communicationHandler = new CommunicationHandler();
+            _process = CreateProcess();
+
+            _process.StartInfo.Arguments = "--stdio --source " + projectPath;
+            _process.StartInfo.FileName = omnisharpTarget;
+
             _process.Start();
             _process.BeginOutputReadLine();
+            _initialized = true;
         }
 
         public static Server Instance
@@ -42,7 +53,17 @@ namespace OmniSharp.Server
 
         public void TerminateProcess()
         {
+            CheckProcess();
+
             _process.Kill();
+        }
+
+        private void CheckProcess()
+        {
+            if (!_initialized)
+            {
+                throw new InvalidOperationException("OmniSharp process is not running!");
+            }
         }
 
         private Process CreateProcess()
@@ -54,8 +75,6 @@ namespace OmniSharp.Server
             startInfo.RedirectStandardOutput = true;
             startInfo.RedirectStandardInput = true;
             startInfo.UseShellExecute = false;
-            startInfo.Arguments = "--stdio --source d:\\home\\repo\\omnisharp4vsmac\\Test\\";
-            startInfo.FileName = "d:\\home\\repo\\omnisharp-roslyn\\src\\OmniSharp\\bin\\Debug\\net46\\OmniSharp.exe";
             process.EnableRaisingEvents = true;
             process.OutputDataReceived += Process_OutputDataReceived;
             process.StartInfo = startInfo;
@@ -73,6 +92,7 @@ namespace OmniSharp.Server
 
         public void ExecuteRequest(RequestBase request, Action<object> callback)
         {
+            CheckProcess();
             _requestQueue.RegisterEntryToQueue(new RequestEntry(request) { HandlerCallback = callback });
 
             var requestString = request.ToString();

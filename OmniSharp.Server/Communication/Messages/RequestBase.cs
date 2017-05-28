@@ -18,7 +18,11 @@ namespace OmniSharp.Server.Communication.Messages
 
     public abstract class RequestBase<T> : RequestBase, IRequest<T> where T : BaseArguments
     {
-        public T Arguments { get; set; }
+        public new T Arguments
+        {
+            get => (T)base.Arguments;
+            set => base.Arguments = value;
+        }
 
         protected RequestBase()
         {
